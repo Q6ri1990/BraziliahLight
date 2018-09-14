@@ -1,4 +1,4 @@
-var sw = 'sw_cached_site.js';
+var sw = '/sw_cached_site.js';
 // Make sure sw are supported
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
