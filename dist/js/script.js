@@ -1,4 +1,4 @@
-var sw = '/sw_cached_site.js';
+var sw = '../dist/sw_cached_site.js';
 // Make sure sw are supported
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -78,12 +78,16 @@ function calculateScores() {
 
     bravo.addScore(bravoInput.value);
     updateScoreBoards();
+
+    alphaInput.value="";
+    bravoInput.value="";
 }
 
 function deletePreviousScore() {
     alpha.deleteLastScore();
     bravo.deleteLastScore();
     updateScoreBoards();
+
 }
 
 function updateScoreBoards() {
