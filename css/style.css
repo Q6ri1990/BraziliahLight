@@ -1,18 +1,19 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
+
 body {
     background: #f4f4f4;
     font-family: 'Roboto Condensed', Arial, Helvetica, sans-serif;
-    height:auto;
+    height: auto;
     margin: 0;
     text-align: center;
     background: url(https://source.unsplash.com/9SewS6lowEU)no-repeat center center fixed; 
-    -webkit-background-size: cover;
+        -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
     width: auto;
     height: auto;
-   /* 
+    /* 
     -webkit-filter: blur(5px);
     -moz-filter: blur(5px);
     -o-filter: blur(5px);
@@ -20,8 +21,8 @@ body {
     filter: blur(5px);*/
 }
 
-.wrapper{
-    display:grid;
+.wrapper {
+    display: grid;
     grid-template-columns: 2fr 2fr;
     grid-auto-rows: auto;
     align-items: center;
@@ -41,7 +42,6 @@ main {
 
 #bravo h3 {
     color: red;
-    
 }
 
 #alpha h3 {
@@ -53,14 +53,14 @@ main {
     font-weight: bold;
 }
 
-#buttons{
+#buttons {
     display: grid;
     grid-template-columns: 1rem 1rem;
     grid-template-rows: auto;
 }
 
-#scores{
-    background:white;
+#scores {
+    background: white;
     opacity: 0.7;
 }
 
@@ -84,12 +84,15 @@ button:hover {
 }
 
 button:active {
-    box-shadow: inset 1px 1px 1px #DFDFDF;   
+    box-shadow: inset 1px 1px 1px #DFDFDF;
 }
 
-p::first-line{
+p::first-line {
     text-decoration: underline;
 }
+
+
+
 /*button{
     padding: 0.5rem 2rem;
     border: 1px #ccc solid;
@@ -99,6 +102,3 @@ p::first-line{
     color: #333;
     transition: background 500ms ease;
 }*/
-
-
-  
