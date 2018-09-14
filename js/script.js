@@ -1,9 +1,10 @@
+var sw = '/sw_cached_site.js';
 // Make sure sw are supported
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker
-            .register('../sw_cached_site.js')
-            .then(reg => console.log('Service Worker: Registered (Pages)'))
+            .register(sw)
+            .then(reg => console.log('Service Worker: Registered (Pages):'+sw))
             .catch(err => console.log(`Service Worker: Error: ${err}`));
     });
 }

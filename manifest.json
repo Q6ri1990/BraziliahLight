@@ -2,7 +2,7 @@
     "dir": "ltr",
     "lang": "en",
     "name": "Braziliah Calculator",
-    "scope": ".",
+    "scope": "/",
     "display": "standalone",
     "start_url": "https://q6ri1990.github.io/BraziliahLight/",
     "short_name": "Braziliah",
