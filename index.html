@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Braziliah Calculator</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+</head>
+
+<body>
+
+    <div id="inputsGroup" class="wrapper">
+        <div id="alpha" class="inputs">
+            <h3>Alpha Team</h3>
+            <input id="alphaScore" type="number">
+        </div>
+        <div id="bravo" class="inputs">
+            <h3>Bravo Team</h3>
+            <input id="bravoScore" type="number">
+        </div>
+    </div>
+    <div id="btns" class="wrapper">
+        <button id="CalculateBtn" onclick="calculateScores()">Calculate</button> <button id="deleteBtn" onclick="deletePreviousScore()">Delete
+            Last
+            Score</button>
+    </div>
+    <div id="scores" class="wrapper">
+        <div id="alphsScores">
+            <p id="alphaStatus"></p>
+            <p id="alphaScoreList"></p>
+        </div>
+
+        <div id="bravoScores">
+            <p id="bravoStatus"></p>
+            <p id="bravoScoreList"></p>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
