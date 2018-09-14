@@ -1,4 +1,4 @@
-/*const cacheName = 'v2';
+const cacheName = 'v2';
 
 // Call Install Event
 self.addEventListener('install', e => {
@@ -40,9 +40,9 @@ self.addEventListener('fetch', e => {
       })
       .catch(err => caches.match(e.request).then(res => res))
   );
-});*/
+});
 //This is the "Offline copy of pages" service worker
-
+/*
 //Install stage sets up the index page (home page) in the cache and opens a new cache
 self.addEventListener('install', function(event) {
   var indexPage = new Request('index.html');
@@ -83,4 +83,4 @@ self.addEventListener('fetch', function(event) {
       });
     })
   );
-})
+})*/
