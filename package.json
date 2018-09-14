@@ -1,0 +1,17 @@
+{
+  "name": "Braziliah_light",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy":"gh-pages -d dist"
+  },
+  "keywords": [],
+  "author": "",
+  "homepage": "https://Q6ri1990.github.io/BraziliahLight",
+  "license": "ISC",
+  "dependencies": {
+    "gh-pages": "^1.2.0"
+  }
+}
