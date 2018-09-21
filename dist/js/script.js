@@ -1,6 +1,6 @@
-const home="../dist/";
+const home = "../dist/";
 // Initiate the service worker
-var sw = home+'sw_cached_site.js';
+var sw = home + 'sw_cached_site.js';
 // Make sure sw are supported
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -25,6 +25,7 @@ if (isIos() && !isInStandaloneMode()) {
     //this.setState({ showInstallMessage: true });
     document.getElementById("iosInstallHint").className = "installPopup";
 }
+
 
 // define the Team class
 class Team {
@@ -89,28 +90,33 @@ var alphaFirstSuper = true,
 const alphaName = document.getElementById("alphaName");
 const bravoName = document.getElementById("bravoName");
 
-alphaName.addEventListener('click', () => {changeName("a")});
-bravoName.addEventListener('click', () => {changeName("b")});
+alphaName.addEventListener('click', () => {
+    changeName("a")
+});
+bravoName.addEventListener('click', () => {
+    changeName("b")
+});
 
 // create team objects
 const alpha = new Team("Alpha", 0);
 const bravo = new Team("Bravo", 0);
 
-alphaInput.placeholder=alpha.name;
-bravoInput.placeholder=bravo.name;
+alphaInput.placeholder = alpha.name;
+bravoInput.placeholder = bravo.name;
+
 function changeName(teamName) {
     var name = prompt("Please enter your name", "( ͡° ͜ʖ ͡°)");
 
     if (name == null || name == "") {
 
-    }else if(teamName=="a"){
+    } else if (teamName == "a") {
         alpha.changeName(name);
-        alphaName.innerText=alpha.name;
-        alphaInput.placeholder=alpha.name;
-    }else if(teamName=="b"){
+        alphaName.innerText = alpha.name;
+        alphaInput.placeholder = alpha.name;
+    } else if (teamName == "b") {
         bravo.changeName(name);
-        bravoName.innerText=bravo.name;
-        bravoInput.placeholder=bravo.name;
+        bravoName.innerText = bravo.name;
+        bravoInput.placeholder = bravo.name;
     }
 }
 
@@ -220,8 +226,8 @@ function playSound(name) {
             name = "";
         }
 
-        var snd = new Audio(home+"audio/"+ name); // buffers automatically when created
-        snd.crossOrigin='anonymous';
+        var snd = new Audio(home + "audio/" + name); // buffers automatically when created
+        snd.crossOrigin = 'anonymous';
         snd.play();
     }
 }
