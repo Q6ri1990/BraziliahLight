@@ -1,6 +1,6 @@
-const home = "../../";
+const home = "../dist/";
 // Initiate the service worker
-var sw = home + 'sw_cached_site.js';
+var sw = home+'sw_cached_site.js';
 // Make sure sw are supported
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -226,7 +226,7 @@ function playSound(name) {
             name = "";
         }
 
-        var snd = new Audio(home + "audio/" + name); // buffers automatically when created
+        var snd = new Audio("audio/" + name); // buffers automatically when created
         snd.crossOrigin = 'anonymous';
         snd.play();
     }
