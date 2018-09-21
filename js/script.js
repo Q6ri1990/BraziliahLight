@@ -220,6 +220,7 @@ function playSound(name) {
         }
 
         var snd = new Audio("../dist/audio/" + name); // buffers automatically when created
+        snd.crossOrigin='anonymous';
         snd.play();
     }
 }
