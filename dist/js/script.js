@@ -1,4 +1,4 @@
-const home = "../dist/";
+const home = "../../";
 // Initiate the service worker
 var sw = home + 'sw_cached_site.js';
 // Make sure sw are supported
