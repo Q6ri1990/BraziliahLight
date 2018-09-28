@@ -1,4 +1,5 @@
 const home = "../dist/";
+
 // Initiate the service worker
 var sw = home+'sw_cached_site.js';
 // Make sure sw are supported
@@ -75,7 +76,24 @@ class Team {
     resetAllScores() {
         this.scoreList = new Array();
     }
+
+    revive(data){
+        Object.assign(this,data);
+        console.log("Reviving");
+
+        console.log(this.score);
+    }
+
 }
+
+// persistence
+function persist(){
+    localStorage.setItem('Alpha',JSON.stringify(alpha));
+    localStorage.setItem('Bravo',JSON.stringify(bravo)); 
+    console.log("Saving...");   
+}
+
+
 
 // get the DOM objects
 const alphaInput = document.getElementById("alphaScore");
@@ -100,48 +118,6 @@ bravoName.addEventListener('click', () => {
 // create team objects
 const alpha = new Team("Alpha", 0);
 const bravo = new Team("Bravo", 0);
-
-alphaInput.placeholder = alpha.name;
-bravoInput.placeholder = bravo.name;
-
-function changeName(teamName) {
-    var name = prompt("Please enter your name", "( ͡° ͜ʖ ͡°)");
-
-    if (name == null || name == "") {
-
-    } else if (teamName == "a") {
-        alpha.changeName(name);
-        alphaName.innerText = alpha.name;
-        alphaInput.placeholder = alpha.name;
-    } else if (teamName == "b") {
-        bravo.changeName(name);
-        bravoName.innerText = bravo.name;
-        bravoInput.placeholder = bravo.name;
-    }
-}
-
-function calculateScores() {
-    alpha.addScore(alphaInput.value);
-
-    bravo.addScore(bravoInput.value);
-    updateScoreBoards();
-
-    alphaInput.value = "";
-    bravoInput.value = "";
-}
-
-function deletePreviousScore() {
-    alpha.deleteLastScore();
-    bravo.deleteLastScore();
-    updateScoreBoards();
-
-}
-
-function updateScoreBoards() {
-    alphaScoreBoard.innerHTML = alpha.ScoreBoardText;
-    bravoScoreBoard.innerHTML = bravo.ScoreBoardText;
-    checkSuperState();
-}
 
 function checkSuperState() {
     var play = false;
@@ -230,4 +206,75 @@ function playSound(name) {
         snd.crossOrigin = 'anonymous';
         snd.play();
     }
+}
+
+function revive(){
+
+    var update = false;
+    if(localStorage.getItem("Alpha"))
+    {
+        alpha.revive(JSON.parse(localStorage.getItem("Alpha")))
+        update=true;
+    }
+
+    if(localStorage.getItem("Bravo"))
+    {
+        bravo.revive(JSON.parse(localStorage.getItem("Bravo")))
+        update=true;
+    }   
+    
+    update?updateScoreBoards():console.log("Nothing to revive");
+}
+
+revive();
+
+
+alphaInput.placeholder = alpha.name;
+bravoInput.placeholder = bravo.name;
+
+function updateScoreBoards() {
+    alphaScoreBoard.innerHTML = alpha.ScoreBoardText;
+    bravoScoreBoard.innerHTML = bravo.ScoreBoardText;
+    checkSuperState();    
+}
+
+function changeName(teamName) {
+    var name = prompt("Please enter your name", "( ͡° ͜ʖ ͡°)");
+
+    if (name == null || name == "") {
+
+    } else if (teamName == "a") {
+        alpha.changeName(name);
+        alphaName.innerText = alpha.name;
+        alphaInput.placeholder = alpha.name;
+    } else if (teamName == "b") {
+        bravo.changeName(name);
+        bravoName.innerText = bravo.name;
+        bravoInput.placeholder = bravo.name;
+    }
+    persist();
+}
+
+function calculateScores() {
+    alpha.addScore(alphaInput.value);
+
+    bravo.addScore(bravoInput.value);
+    updateScoreBoards();
+
+    alphaInput.value = "";
+    bravoInput.value = "";
+    persist();
+}
+
+function deletePreviousScore() {
+    alpha.deleteLastScore();
+    bravo.deleteLastScore();
+    updateScoreBoards();
+    persist();
+}
+
+function newGame(){
+    alpha.resetAllScores();
+    bravo.resetAllScores();
+    updateScoreBoards();
 }
