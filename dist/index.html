@@ -20,42 +20,55 @@
 </head>
 
 <body>
-    <div id="inputsGroup" class="wrapper">
-        <div id="alpha" class="inputs">
-            <h3 id="alphaName" class="hidden">Alpha Team</h3>
-            <input id="alphaScore" type="number" oncontextmenu="changeName(alpha)" placeholder="Alpha">
+    <input type="checkbox" id="drawer-toggle" name="drawer-toggle" />
+    <label for="drawer-toggle" id="drawer-toggle-label"></label>
+    <header>Braziliah Light  <button onclick="newGame()" class="skew-20 olive">New Game</button></header>  
+    <nav id="drawer">
+        <ul>
+            <li><input type="checkbox" class="tgl tgl-skewed" name="Play Sound" id="play" checked="checked"><label
+                    class="tgl-btn" for="play" data-tg-off="&#128263;" data-tg-on="&#128266;"></label></li>
+        </ul>
+    </nav>
+
+    <div id="page-content">
+        <div id="inputsGroup" class="wrapper">
+            <div id="alpha" class="content inputs">
+                <h3 id="alphaName" class="hidden">Alpha Team</h3>
+                <input id="alphaScore" type="number" oncontextmenu="changeName('a')" placeholder="Alpha">
+                <button id="changeAlphaName" onclick="changeName('a')">&#x1F58A;</button>
+            </div>
+            <div id="bravo" class="content inputs">
+                <h3 id="bravoName" class="hidden">Bravo Team</h3>
+                <input id="bravoScore" type="number" oncontextmenu="changeName('b')" placeholder="Bravo">
+                <button id="changeBravoName" onclick="changeName('b')">&#128394;</button>
+            </div>
         </div>
-        <div id="bravo" class="inputs"> 
-            <h3 id="bravoName" class="hidden">Bravo Team</h3>
-            <input id="bravoScore" type="number" oncontextmenu="changeName(bravo)" placeholder="Bravo">
+        <div id="btns" class="content">
+            <button id="CalculateBtn" onclick="calculateScores()" class='skew-20'>Calculate</button> <button id="deleteBtn"
+                onclick="deletePreviousScore()" class='skew-20'>Delete
+                Last
+                Score</button>
         </div>
-    </div>
-    <div id="btns" >
-        <button id="CalculateBtn" onclick="calculateScores()" class='skew-20'>Calculate</button> <button id="deleteBtn" onclick="deletePreviousScore()"class='skew-20'>Delete
-            Last
-            Score</button>
-    </div>
-    <div id="scores" class="wrapper">
-        <div id="alphsScores">
-            <p id="alphaStatus"></p>
-            <p id="alphaScoreList"></p>
+        <div id="scores" class="wrapper">
+            <div id="alphsScores" class="content">
+                <p id="alphaStatus"></p>
+                <p id="alphaScoreList"></p>
+            </div>
+
+            <div id="bravoScores" class="content">
+                <p id="bravoStatus"></p>
+                <p id="bravoScoreList"></p>
+            </div>
         </div>
 
-        <div id="bravoScores">
-            <p id="bravoStatus"></p>
-            <p id="bravoScoreList"></p>
-        </div>
-    </div>
-
-    <div id="soundControl" class="wrapper">
-            <h4>Sounds</h4><input type="checkbox" class="tgl tgl-skewed" name="Play Sound" id="play" checked="checked" ><label class="tgl-btn" for="play" data-tg-off="OFF" data-tg-on="ON"></label>
-    </div>
-    
-    <div id="iosInstallHint" class="hidden">
+        <div id="iosInstallHint" class="hidden">
             Share button
-              <img class="icon1"  alt="Share Button Image" src="data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIiB4bWxucz0iaHR0cDovL3d3dy5 3My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMC44OCAyNy4yNSI+PGRlZnM+PHN0eWxlPi 5jbHMtMXtmaWxsOm5vbmU7c3Ryb2tlOiMyMzFmMjA7fTwvc3R5bGU+PC9kZWZzPjx0aXRsZT5TY WZhcmlfU2hhcmU8L3RpdGxlPjxwb2x5bGluZSBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMTMuMTMg OCAyMC4zOCA4IDIwLjM4IDI2Ljc1IDAuNSAyNi43NSAwLjUgOCA3LjUgOCIvPjxsaW5lIGNsYXN zPSJjbHMtMSIgeDE9IjEwLjQ0IiB5MT0iMTciIHgyPSIxMC40NCIvPjxsaW5lIGNsYXNzPSJjbH MtMSIgeDE9IjEwLjQ4IiB5MT0iMC4zOCIgeDI9IjE1LjI4IiB5Mj0iNS4xOCIvPjxsaW5lIGNsY XNzPSJjbHMtMSIgeDE9IjEwLjQ0IiB5MT0iMC4zOCIgeDI9IjUuNjQiIHkyPSI1LjE4Ii8+PC9z dmc+"> at the (top or bottom) of the browser<br/>
+            <img class="icon1" alt="Share Button Image" src="data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIiB4bWxucz0iaHR0cDovL3d3dy5 3My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMC44OCAyNy4yNSI+PGRlZnM+PHN0eWxlPi 5jbHMtMXtmaWxsOm5vbmU7c3Ryb2tlOiMyMzFmMjA7fTwvc3R5bGU+PC9kZWZzPjx0aXRsZT5TY WZhcmlfU2hhcmU8L3RpdGxlPjxwb2x5bGluZSBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMTMuMTMg OCAyMC4zOCA4IDIwLjM4IDI2Ljc1IDAuNSAyNi43NSAwLjUgOCA3LjUgOCIvPjxsaW5lIGNsYXN zPSJjbHMtMSIgeDE9IjEwLjQ0IiB5MT0iMTciIHgyPSIxMC40NCIvPjxsaW5lIGNsYXNzPSJjbH MtMSIgeDE9IjEwLjQ4IiB5MT0iMC4zOCIgeDI9IjE1LjI4IiB5Mj0iNS4xOCIvPjxsaW5lIGNsY XNzPSJjbHMtMSIgeDE9IjEwLjQ0IiB5MT0iMC4zOCIgeDI9IjUuNjQiIHkyPSI1LjE4Ii8+PC9z dmc+">
+            at the (top or bottom) of the browser<br />
             Scroll (if needed) to find the Add to Home Screen button
-              <img class="icon2"  alt="Add to Home Screen button Image" src="data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIiB4bWxucz0iaHR0cDovL3d3dy5 3My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNSAzNSI+PHRpdGxlPlNhZmFyaV9BMkhTPC 90aXRsZT48cmVjdCB3aWR0aD0iMzUiIGhlaWdodD0iMzUiIHJ4PSI4IiByeT0iOCIgc3R5bGU9I mZpbGw6IzhmOGY4ZiIvPjxsaW5lIHgxPSIyNC43NSIgeTE9IjE3LjUiIHgyPSIxMC4yNSIgeTI9 IjE3LjUiIHN0eWxlPSJmaWxsOm5vbmU7c3Ryb2tlOiNmZmY7c3Ryb2tlLXdpZHRoOjJweCIvPjx saW5lIHgxPSIxNy41IiB5MT0iMTAuMjUiIHgyPSIxNy41IiB5Mj0iMjQuNzUiIHN0eWxlPSJmaW xsOm5vbmU7c3Ryb2tlOiNmZmY7c3Ryb2tlLXdpZHRoOjJweCIvPjwvc3ZnPg=="><br/>
+            <img class="icon2" alt="Add to Home Screen button Image" src="data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIiB4bWxucz0iaHR0cDovL3d3dy5 3My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNSAzNSI+PHRpdGxlPlNhZmFyaV9BMkhTPC 90aXRsZT48cmVjdCB3aWR0aD0iMzUiIGhlaWdodD0iMzUiIHJ4PSI4IiByeT0iOCIgc3R5bGU9I mZpbGw6IzhmOGY4ZiIvPjxsaW5lIHgxPSIyNC43NSIgeTE9IjE3LjUiIHgyPSIxMC4yNSIgeTI9 IjE3LjUiIHN0eWxlPSJmaWxsOm5vbmU7c3Ryb2tlOiNmZmY7c3Ryb2tlLXdpZHRoOjJweCIvPjx saW5lIHgxPSIxNy41IiB5MT0iMTAuMjUiIHgyPSIxNy41IiB5Mj0iMjQuNzUiIHN0eWxlPSJmaW xsOm5vbmU7c3Ryb2tlOiNmZmY7c3Ryb2tlLXdpZHRoOjJweCIvPjwvc3ZnPg=="><br />
+        </div>
+
     </div>
     <script src="js/script.js"></script>
 
