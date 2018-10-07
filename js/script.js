@@ -75,13 +75,11 @@ class Team {
 
     resetAllScores() {
         this.scoreList = new Array();
+        this.ScoreBoardText = "";
     }
 
     revive(data){
         Object.assign(this,data);
-        console.log("Reviving");
-
-        console.log(this.score);
     }
 
 }
@@ -90,7 +88,6 @@ class Team {
 function persist(){
     localStorage.setItem('Alpha',JSON.stringify(alpha));
     localStorage.setItem('Bravo',JSON.stringify(bravo)); 
-    console.log("Saving...");   
 }
 
 
