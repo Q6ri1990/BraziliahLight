@@ -88,7 +88,6 @@ class Team {
 function persist(){
     localStorage.setItem('Alpha',JSON.stringify(alpha));
     localStorage.setItem('Bravo',JSON.stringify(bravo)); 
-    console.log("Saving...");   
 }
 
 
@@ -100,8 +99,6 @@ const alphaScoreBoard = document.getElementById("alphaScoreList");
 const bravoScoreBoard = document.getElementById("bravoScoreList");
 const alphaStatus = document.getElementById("alphaStatus");
 const bravoStatus = document.getElementById("bravoStatus");
-var alphaFirstSuper = true,
-    bravoFirstSuper = true;
 
 const alphaName = document.getElementById("alphaName");
 const bravoName = document.getElementById("bravoName");
@@ -113,9 +110,30 @@ bravoName.addEventListener('click', () => {
     changeName("b")
 });
 
+// create the variables
+var alphaFirstSuper = true,bravoFirstSuper = true;
+
+
+// translations example
+var translations = 
+{ 
+   // "en" : { "SomeText" : "Test in English", "SomeOtherText" : "Another Test in English"  },
+   // "ar" : { "" : "", "":""}
+
+   "en" : { "addScore": "Add Score", "alpha": "Alpha", "appName": "Braziliah Light", "bravo": "Bravo", "changeName": "Please enter your name", "deleteScore": "Delete Last Score", "draw": "Draw", "lose": "Lost", "newGame": "New Game", "super": "Super", "win": "Won"},
+   "ar" : { "addScore": "احسب", "alpha": "لنا", "appName": "حاسبة البرازيلية", "bravo": "لهم", "changeName": "اسم الفريق", "deleteScore": "امسح المجموع السابق", "draw": "تعادل", "lose": "خسر", "newGame": "قيم جديد", "super": "سوبر", "win": "فاز"}
+  
+  
+};
+
+var language = "en";
+
+
 // create team objects
-const alpha = new Team("Alpha", 0);
-const bravo = new Team("Bravo", 0);
+const alpha = new Team(getText("alpha"), 0);
+const bravo = new Team(getText("bravo"), 0);
+
+updateTexts();
 
 function checkSuperState() {
     var play = false;
@@ -123,30 +141,30 @@ function checkSuperState() {
     var sound = "";
     if (alpha.score >= 2000 && bravo.score >= 2000) {
         if (alpha.score > bravo.score) {
-            alphaStatus.innerText = "Win";
+            alphaStatus.innerText = getText("win");
             alphaStatus.style.color = "#006400";
-            bravoStatus.innerText = "Lose";
+            bravoStatus.innerText = getText("lose");
         } else if (alpha.score == bravo.score) {
-            alphaStatus.innerText = "Draw";
-            bravoStatus.innerText = "Draw";
+            alphaStatus.innerText = getText("draw");
+            bravoStatus.innerText = getText("draw");
         } else {
-            alphaStatus.innerText = "Lose";
-            bravoStatus.innerText = "Win";
+            alphaStatus.innerText = getText("lose");
+            bravoStatus.innerText = getText("win");
             bravoStatus.style.color = "#006400";
 
         }
     } else if (alpha.score >= 2000) {
-        alphaStatus.innerText = "Win";
-        bravoStatus.innerText = "Lose";
+        alphaStatus.innerText = getText("win");
+        bravoStatus.innerText = getText("lose");
         alphaStatus.style.color = "#006400";
     } else if (bravo.score >= 2000) {
-        alphaStatus.innerText = "Lose";
-        bravoStatus.innerText = "Win";
+        alphaStatus.innerText = getText("lose");
+        bravoStatus.innerText = getText("win");
         bravoStatus.style.color = "#006400";
     } else {
 
         if (alpha.isSuper()) {
-            alphaStatus.innerText = "Super";
+            alphaStatus.innerText = getText("super");
             alphaStatus.className = "superState";
             if (alphaFirstSuper == true) {
                 alphaFirstSuper = false;
@@ -160,7 +178,7 @@ function checkSuperState() {
 
 
         if (bravo.isSuper()) {
-            bravoStatus.innerText = "Super";
+            bravoStatus.innerText = getText("super");
             bravoStatus.className = "superState";
             if (bravoFirstSuper == true) {
                 bravoFirstSuper = false;
@@ -237,7 +255,7 @@ function updateScoreBoards() {
 }
 
 function changeName(teamName) {
-    var name = prompt("Please enter your name", "( ͡° ͜ʖ ͡°)");
+    var name = prompt(translations[language].changeName, "( ͡° ͜ʖ ͡°)");
 
     if (name == null || name == "") {
 
@@ -275,4 +293,27 @@ function newGame(){
     alpha.resetAllScores();
     bravo.resetAllScores();
     updateScoreBoards();
+}
+
+function updateTexts(){
+    document.getElementById("title").textContent=getText("appName");
+    document.getElementById("newGameBtn").textContent=getText("newGame");
+    document.getElementById("CalculateBtn").textContent=getText("addScore");
+    document.getElementById("deleteBtn").textContent=getText("deleteScore"); 
+    updateScoreBoards();   
+}
+
+function getText(name){
+    if (translations[language].hasOwnProperty(name))
+      return translations[language][name];
+}
+
+function changeLanguage(){
+    if (document.getElementById("lang").checked == true)
+    {
+        language="ar";
+    }else{
+        language="en";
+    }
+    updateTexts();
 }
