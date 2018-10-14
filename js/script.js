@@ -103,9 +103,19 @@ const bravoStatus = document.getElementById("bravoStatus");
 const alphaName = document.getElementById("alphaName");
 const bravoName = document.getElementById("bravoName");
 
+if(isIos()){
+    alphaInput.type="text";
+    alphaInput.pattern="^[-+]?\d*$";
+    bravoInput.type="text";
+    bravoInput.pattern="^[-+]?\d*$";
+
+}
+
 alphaName.addEventListener('click', () => {
     changeName("a")
 });
+
+
 bravoName.addEventListener('click', () => {
     changeName("b")
 });
@@ -293,6 +303,8 @@ function newGame(){
     alpha.resetAllScores();
     bravo.resetAllScores();
     updateScoreBoards();
+    alphaStatus.innerText="";
+    bravoStatus.innerText="";
 }
 
 function updateTexts(){
