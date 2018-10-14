@@ -725,3 +725,8 @@ h4 {
 #soundControl {
     background: rgba(227, 227, 227, 0.4);
 }
+
+input:required:invalid, input:focus:invalid {
+    color:red;
+  }
+  
