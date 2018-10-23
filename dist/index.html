@@ -20,15 +20,15 @@
 </head>
 
 <body>
-    <input type="checkbox" id="drawer-toggle" name="drawer-toggle" />
+    <input type="checkbox" id="drawer-toggle" name="drawer-toggle" onclick="removeGlow()"/>
     <label for="drawer-toggle" id="drawer-toggle-label"></label>
     <header id="header"><div id="title"></div>  <button id="newGameBtn" onclick="newGame()" class="skew-20 olive">New Game</button></header>  
     <nav id="drawer">
         <ul>
-            <li><input type="checkbox" class="tgl tgl-skewed" name="Play Sound" id="play" checked="checked"><label
+            <li><input type="checkbox" class="tgl tgl-skewed" name="Play Sound" id="play" onchange="toggleSounds()" ><label
                     class="tgl-btn" for="play" data-tg-off="&#128263;" data-tg-on="&#128266;"></label></li>
         </ul>
-        <li><input type="checkbox" class="tgl tgl-skewed" name="Change Lang" id="lang" onchange="changeLanguage()"><label
+        <li><input type="checkbox" class="tgl tgl-skewed" name="Change Lang" id="lang" onchange="changeLanguage()" checked="checked"><label
             class="tgl-btn" for="lang" data-tg-off="🇺🇸" data-tg-on="🇶🇦"></label></li>
 </ul>
     </nav>

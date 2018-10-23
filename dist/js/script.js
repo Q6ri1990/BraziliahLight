@@ -1,7 +1,7 @@
 const home = "../dist/";
 
 // Initiate the service worker
-var sw = home+'sw_cached_site.js';
+var sw = home + 'sw_cached_site.js';
 // Make sure sw are supported
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -26,7 +26,6 @@ if (isIos() && !isInStandaloneMode()) {
     //this.setState({ showInstallMessage: true });
     document.getElementById("iosInstallHint").className = "installPopup";
 }
-
 
 // define the Team class
 class Team {
@@ -68,6 +67,10 @@ class Team {
         return this.score >= 1000;
     };
 
+    isAbove2000() {
+        return this.score >= 2000
+    }
+
     deleteLastScore() {
         this.scoreList.pop();
         this.calculateTotal();
@@ -78,16 +81,16 @@ class Team {
         this.ScoreBoardText = "";
     }
 
-    revive(data){
-        Object.assign(this,data);
+    revive(data) {
+        Object.assign(this, data);
     }
 
 }
 
 // persistence
-function persist(){
-    localStorage.setItem('Alpha',JSON.stringify(alpha));
-    localStorage.setItem('Bravo',JSON.stringify(bravo)); 
+function persist() {
+    localStorage.setItem('Alpha', JSON.stringify(alpha));
+    localStorage.setItem('Bravo', JSON.stringify(bravo));
 }
 
 
@@ -103,13 +106,14 @@ const bravoStatus = document.getElementById("bravoStatus");
 const alphaName = document.getElementById("alphaName");
 const bravoName = document.getElementById("bravoName");
 
-if(isIos()){
-    alphaInput.type="text";
-    alphaInput.pattern="^[-+]?\d*$";
-    bravoInput.type="text";
-    bravoInput.pattern="^[-+]?\d*$";
-
-}
+/*if(isIos()){
+    var pattern="[0-9]*";
+    alphaInput.type="number";
+    alphaInput.pattern=pattern;
+    alphaInput.min="-1";
+    bravoInput.type="number";
+    bravoInput.pattern=pattern;
+}*/
 
 alphaName.addEventListener('click', () => {
     changeName("a")
@@ -121,19 +125,38 @@ bravoName.addEventListener('click', () => {
 });
 
 // create the variables
-var alphaFirstSuper = true,bravoFirstSuper = true;
+var alphaFirstSuper = true,
+    bravoFirstSuper = true;
 
 
 // translations example
-var translations = 
-{ 
-   // "en" : { "SomeText" : "Test in English", "SomeOtherText" : "Another Test in English"  },
-   // "ar" : { "" : "", "":""}
-
-   "en" : { "addScore": "Add Score", "alpha": "Alpha", "appName": "Braziliah Light", "bravo": "Bravo", "changeName": "Please enter your name", "deleteScore": "Delete Last Score", "draw": "Draw", "lose": "Lost", "newGame": "New Game", "super": "Super", "win": "Won"},
-   "ar" : { "addScore": "احسب", "alpha": "لنا", "appName": "حاسبة البرازيلية", "bravo": "لهم", "changeName": "اسم الفريق", "deleteScore": "امسح المجموع السابق", "draw": "تعادل", "lose": "خسر", "newGame": "قيم جديد", "super": "سوبر", "win": "فاز"}
-  
-  
+var translations = {
+    "en": {
+        "addScore": "Add Score",
+        "alpha": "Alpha",
+        "appName": "Braziliah Light",
+        "bravo": "Bravo",
+        "changeName": "Please enter your name",
+        "deleteScore": "Delete Last Score",
+        "draw": "Draw",
+        "lose": "Lost",
+        "newGame": "New Game",
+        "super": "Super",
+        "win": "Won"
+    },
+    "ar": {
+        "addScore": "احسب",
+        "alpha": "لنا",
+        "appName": "حاسبة البرازيلية",
+        "bravo": "لهم",
+        "changeName": "اسم الفريق",
+        "deleteScore": "امسح المجموع السابق",
+        "draw": "تعادل",
+        "lose": "خسر",
+        "newGame": "قيم جديد",
+        "super": "سوبر",
+        "win": "فاز"
+    }
 };
 
 var language = "en";
@@ -143,36 +166,20 @@ var language = "en";
 const alpha = new Team(getText("alpha"), 0);
 const bravo = new Team(getText("bravo"), 0);
 
-updateTexts();
-
 function checkSuperState() {
     var play = false;
     var omg = false;
     var sound = "";
-    if (alpha.score >= 2000 && bravo.score >= 2000) {
-        if (alpha.score > bravo.score) {
-            alphaStatus.innerText = getText("win");
-            alphaStatus.style.color = "#006400";
-            bravoStatus.innerText = getText("lose");
-        } else if (alpha.score == bravo.score) {
-            alphaStatus.innerText = getText("draw");
-            bravoStatus.innerText = getText("draw");
-        } else {
-            alphaStatus.innerText = getText("lose");
-            bravoStatus.innerText = getText("win");
-            bravoStatus.style.color = "#006400";
-
-        }
-    } else if (alpha.score >= 2000) {
-        alphaStatus.innerText = getText("win");
-        bravoStatus.innerText = getText("lose");
-        alphaStatus.style.color = "#006400";
-    } else if (bravo.score >= 2000) {
-        alphaStatus.innerText = getText("lose");
-        bravoStatus.innerText = getText("win");
-        bravoStatus.style.color = "#006400";
+    if (alpha.isAbove2000() && bravo.isAbove2000() && alpha.score == bravo.score) {
+        alphaStatus.innerText = getText("draw");
+        bravoStatus.innerText = getText("draw");
+        alphaStatus.className = "skew-20";
+        bravoStatus.className = "skew-20";
+    } else if (alpha.isAbove2000() && alpha.score > bravo.score) {
+        declareWinner(alphaStatus, bravoStatus);
+    } else if (bravo.isAbove2000() && alpha.score < bravo.score) {
+        declareWinner(bravoStatus, alphaStatus);
     } else {
-
         if (alpha.isSuper()) {
             alphaStatus.innerText = getText("super");
             alphaStatus.className = "superState";
@@ -185,7 +192,6 @@ function checkSuperState() {
             alphaStatus.innerText = "";
             alphaStatus.className = "";
         }
-
 
         if (bravo.isSuper()) {
             bravoStatus.innerText = getText("super");
@@ -210,12 +216,13 @@ function checkSuperState() {
                 play = true;
             }
         }
+        if (omg) {
+            playSound("OMG");
+        } else if (play) {
+            playSound(sound);
+        }
     }
-    if (omg) {
-        playSound("OMG");
-    } else if (play) {
-        playSound(sound);
-    }
+
 }
 
 function playSound(name) {
@@ -234,26 +241,30 @@ function playSound(name) {
     }
 }
 
-function revive(){
+function revive() {
 
     var update = false;
-    if(localStorage.getItem("Alpha"))
-    {
+    if (localStorage.getItem("Alpha")) {
         alpha.revive(JSON.parse(localStorage.getItem("Alpha")))
-        update=true;
+        update = true;
     }
 
-    if(localStorage.getItem("Bravo"))
-    {
+    if (localStorage.getItem("Bravo")) {
         bravo.revive(JSON.parse(localStorage.getItem("Bravo")))
-        update=true;
-    }   
-    
-    update?updateScoreBoards():console.log("Nothing to revive");
+        update = true;
+    }
+
+    if (!localStorage.getItem("lang") || !localStorage.getItem("sound")) {
+        document.getElementById("drawer-toggle-label").classList.add("glowAnimation");
+    } else {
+        changeLanguage();
+    }
+
+    update ? updateScoreBoards() : console.log("Nothing to revive");
 }
 
 revive();
-
+updateTexts();
 
 alphaInput.placeholder = alpha.name;
 bravoInput.placeholder = bravo.name;
@@ -261,7 +272,7 @@ bravoInput.placeholder = bravo.name;
 function updateScoreBoards() {
     alphaScoreBoard.innerHTML = alpha.ScoreBoardText;
     bravoScoreBoard.innerHTML = bravo.ScoreBoardText;
-    checkSuperState();    
+    checkSuperState();
 }
 
 function changeName(teamName) {
@@ -299,33 +310,52 @@ function deletePreviousScore() {
     persist();
 }
 
-function newGame(){
+function newGame() {
     alpha.resetAllScores();
     bravo.resetAllScores();
     updateScoreBoards();
-    alphaStatus.innerText="";
-    bravoStatus.innerText="";
+    alphaStatus.innerText = "";
+    bravoStatus.innerText = "";
 }
 
-function updateTexts(){
-    document.getElementById("title").textContent=getText("appName");
-    document.getElementById("newGameBtn").textContent=getText("newGame");
-    document.getElementById("CalculateBtn").textContent=getText("addScore");
-    document.getElementById("deleteBtn").textContent=getText("deleteScore"); 
-    updateScoreBoards();   
+function updateTexts() {
+    document.getElementById("title").textContent = getText("appName");
+    document.getElementById("newGameBtn").textContent = getText("newGame");
+    document.getElementById("CalculateBtn").textContent = getText("addScore");
+    document.getElementById("deleteBtn").textContent = getText("deleteScore");
+    updateScoreBoards();
 }
 
-function getText(name){
+function getText(name) {
     if (translations[language].hasOwnProperty(name))
-      return translations[language][name];
+        return translations[language][name];
 }
 
-function changeLanguage(){
-    if (document.getElementById("lang").checked == true)
-    {
-        language="ar";
-    }else{
-        language="en";
+function changeLanguage() {
+    if (document.getElementById("lang").checked == true) {
+        language = "ar";
+    } else {
+        language = "en";
     }
+
+    localStorage.setItem("lang", language);
+    removeGlow();
     updateTexts();
+}
+
+function toggleSounds() {
+    localStorage.setItem("sound", document.getElementById("play").checked);
+    removeGlow();
+}
+
+function removeGlow() {
+    document.getElementById("drawer-toggle-label").classList.remove("glowAnimation");
+}
+
+function declareWinner(winner, loser) {
+    winner.innerText = getText("win");
+    winner.classList.add("animation");
+    winner.style.color = "#006400";
+    loser.innerText = getText("lose");
+    loser.style.color = "red";
 }
