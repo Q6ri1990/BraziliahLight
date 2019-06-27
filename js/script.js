@@ -1,6 +1,92 @@
 const home = "../dist/";
 
-// Initiate the service worker
+// indexDB variables
+// check if the indexDB is supported or not
+function isIndexDBSupported() {
+    if (!('indexedDB' in window)) {
+        alert("your data might not be saved properly");
+        return false;
+    }
+    console.log("Supported");
+    //alert("IDB Supported");
+    return true;
+}
+
+const dbName = 'Brazilliah',
+    tableName = 'Brazilliah',
+    version = 1,
+    useDB = isIndexDBSupported();
+
+
+// create the database
+function createIndexedDB() {
+    if (useDB) {
+        return idb.open(dbName, version, function (upgradeDb) {
+            // alert("Creating DB " + dbName);
+            if (!upgradeDb.objectStoreNames.contains(tableName)) {
+                //  alert("upgrading table " + tableName);
+                const eventsOS = upgradeDb.createObjectStore(tableName,{keyPath: 'id'});
+            }
+        });
+    }
+}
+
+// create the promise object that will be used by the application
+const dbPromise = createIndexedDB();
+
+// functions that utilize the indexDB
+function saveObject(records) {
+    if (isIndexDBSupported()) {
+        return dbPromise.then(db => {
+            const tx = db.transaction(tableName, 'readwrite');
+            const store = tx.objectStore(tableName);
+            return Promise.all(records.map(record => store.put(record)))
+            .catch(e => {
+                tx.abort();
+                alert(e);  
+                throw Error('Events were not added to the store ');
+            });
+        });
+    }
+}
+
+function findById(id) {
+    if (isIndexDBSupported()) {
+        return dbPromise.then(function (db) {
+            var tx = db.transaction(tableName, 'readonly');
+            var store = tx.objectStore(tableName);
+            return store.get(id);
+        });
+    }
+}
+
+
+function getStoredObject(key) {
+    if (useDB) {
+       return findById(key).then(item => {
+            if(item ===null|| item === undefined){
+                alert('new team');
+                return  new Team(key,getText(key),0);
+            }else{
+                return  item;
+            }
+        }
+        ).catch(e=>console.log(e));
+    } else {
+        // use the localStorage
+        if (localStorage.getItem(key)) {
+            return localStorage.getItem(key);
+        }else{
+           return new Team(key,getText(key),0);
+        }
+    }
+}
+
+
+
+
+
+/* // Initiate the service worker
 var sw = home + 'sw_cached_site.js';
 // Make sure sw are supported
 if ('serviceWorker' in navigator) {
@@ -10,7 +96,7 @@ if ('serviceWorker' in navigator) {
             .then(reg => console.log('Service Worker: Registered (Pages):' + sw))
             .catch(err => console.log(`Service Worker: Error: ${err}`));
     });
-}
+} */
 
 // Detects if device is on iOS 
 const isIos = () => {
@@ -29,7 +115,8 @@ if (isIos() && !isInStandaloneMode()) {
 
 // define the Team class
 class Team {
-    constructor(name, score) {
+    constructor(id, name, score) {
+        this.id = id;
         this.name = name;
         this.score = score;
         this.scoreList = new Array();
@@ -83,14 +170,19 @@ class Team {
 
     revive(data) {
         Object.assign(this, data);
-    }
+   }
 
 }
 
 // persistence
 function persist() {
-    localStorage.setItem('Alpha', JSON.stringify(alpha));
-    localStorage.setItem('Bravo', JSON.stringify(bravo));
+    if (useDB) {
+        saveObject([alpha,bravo]);
+        // do something for the options as well
+    } else {
+        localStorage.setItem('Alpha', JSON.stringify(alpha));
+        localStorage.setItem('Bravo', JSON.stringify(bravo));
+    }
 }
 
 
@@ -163,8 +255,8 @@ var language = "en";
 
 
 // create team objects
-const alpha = new Team(getText("alpha"), 0);
-const bravo = new Team(getText("bravo"), 0);
+let alpha = new Team("Alpha",getText("alpha"), 0);
+let bravo = new Team("Bravo",getText("bravo"), 0);
 
 function checkSuperState() {
     var play = false;
@@ -241,10 +333,22 @@ function playSound(name) {
     }
 }
 
+
+
 function revive() {
 
-    var update = false;
-    if (localStorage.getItem("Alpha")) {
+    var update = true;
+
+    getStoredObject("Alpha").then(team=>{
+        alpha.revive(team);
+    });
+    getStoredObject("Bravo").then(team=>{
+        bravo.revive(team);
+        updateScoreBoards();
+    });
+    
+    /*if (localStorage.getItem("Alpha")) {
+
         alpha.revive(JSON.parse(localStorage.getItem("Alpha")))
         update = true;
     }
@@ -253,14 +357,14 @@ function revive() {
         bravo.revive(JSON.parse(localStorage.getItem("Bravo")))
         update = true;
     }
-
+    */
     if (!localStorage.getItem("lang") || !localStorage.getItem("sound")) {
         document.getElementById("drawer-toggle-label").classList.add("glowAnimation");
     } else {
         changeLanguage();
     }
 
-    update ? updateScoreBoards() : console.log("Nothing to revive");
+     //updateScoreBoards();
 }
 
 revive();
@@ -270,6 +374,7 @@ alphaInput.placeholder = alpha.name;
 bravoInput.placeholder = bravo.name;
 
 function updateScoreBoards() {
+
     alphaScoreBoard.innerHTML = alpha.ScoreBoardText;
     bravoScoreBoard.innerHTML = bravo.ScoreBoardText;
     checkSuperState();

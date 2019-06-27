@@ -1,5 +1,5 @@
 const home = "../dist/";
-
+/*
 // Initiate the service worker
 var sw = home + 'sw_cached_site.js';
 // Make sure sw are supported
@@ -10,7 +10,7 @@ if ('serviceWorker' in navigator) {
             .then(reg => console.log('Service Worker: Registered (Pages):' + sw))
             .catch(err => console.log(`Service Worker: Error: ${err}`));
     });
-}
+}*/
 
 // Detects if device is on iOS 
 function isIos() {
