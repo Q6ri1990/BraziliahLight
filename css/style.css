@@ -281,8 +281,9 @@ main {
 }
 
 #scores {
-    color: #fff;
-   /* background: rgba(227, 227, 227, 0.4);*/
+    color: #000;
+
+    background: rgba(227, 227, 227, 0.932);
 }
 
 /* Normal white Button as seen on Google.com*/
